@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 
-	http_transport "github.com/go-kit/kit/transport/http"
+	httptransport "github.com/go-kit/kit/transport/http"
 )
 
 func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
@@ -15,13 +15,13 @@ func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
 	// Add Methods
 	// GET /{code}
 	r.Methods("GET").Path("/{code}").Handler(
-		http_transport.NewServer(
+		httptransport.NewServer(
 			endpoints.GetRedirect,
 			decodeGetRedirectRequest,
 			encodeGetRedirectResponse))
 	// POST /api/shorten {url: {input}}}
 	r.Methods("POST").Path("/api/shorten").Handler(
-		http_transport.NewServer(
+		httptransport.NewServer(
 			endpoints.CreateRedirect,
 			decodeCreateRedirectRequest,
 			encodeJsonResponse,
