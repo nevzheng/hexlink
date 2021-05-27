@@ -28,6 +28,6 @@ func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
 		),
 	)
 	//// Serve static files
-	//r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	return r
 }
