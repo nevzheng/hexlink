@@ -31,12 +31,11 @@ func makeGetRedirectEndpoint(s shortener.RedirectService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetRedirectRequest)
 		if redirect, err := s.Find(req.Code); err != nil {
-			return nil, nil
+			return nil, shortener.ErrRedirectNotFound
 		} else {
 			return GetRedirectResponse{
 				Url: redirect.URL,
-			}, err
+			}, nil
 		}
 	}
-
 }
