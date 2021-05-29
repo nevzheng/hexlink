@@ -1,7 +1,9 @@
+import React from "react";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-export const UrlForm = () => {
+const UrlForm: React.FC = () => {
   return (
     <div>
       <Form>

@@ -1,7 +1,9 @@
+import React from "react";
+
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Nav from "react-bootstrap/Nav";
 
-export const IntroJumbo = () => {
+const IntroJumbo: React.FC = () => {
   return (
     <div>
       <Jumbotron>

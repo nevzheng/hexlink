@@ -1,7 +1,9 @@
+import React from "react";
+
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 
-export const Information = () => {
+const Information: React.FC = () => {
   return (
     <div>
       <h3>Implementation</h3>

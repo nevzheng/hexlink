@@ -1,9 +1,18 @@
-export const LinkTableRow = () => {
+import React from "react";
+
+import { Redirect } from "types";
+
+interface LinkTableRowProp {
+  redirect: Redirect;
+  key: number;
+}
+
+const LinkTableRow: React.FC<LinkTableRowProp> = (props: LinkTableRowProp) => {
   return (
     <tr>
-      <td>1</td>
-      <td>google.com</td>
-      <td>0123</td>
+      <td>{props.key}</td>
+      <td>{props.redirect.url}</td>
+      <td>{props.redirect.code}</td>
     </tr>
   );
 };

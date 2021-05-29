@@ -12,16 +12,28 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "declaration": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "incremental": true,
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": [
+      "shared/types",
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/**/*"
   ],
-    "exclude": ["node_modules", "build"] // *** The files to not type check ***
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

@@ -1,9 +1,15 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 
+import { Redirect } from "types";
+
 import LinkTableRow from "./LinkTableRow";
 
-export const LinkTable = () => {
+interface LinkTableProps {
+  redirects: Array<Redirect>;
+}
+
+const LinkTable: React.FC<LinkTableProps> = ({ redirects }: LinkTableProps) => {
   return (
     <div>
       <h3>Results</h3>
@@ -18,9 +24,9 @@ export const LinkTable = () => {
           <th>Shortened</th>
         </thead>
         <tbody>
-          <LinkTableRow />
-          <LinkTableRow />
-          <LinkTableRow />
+          {redirects.map((redirect, index) => {
+            return <LinkTableRow redirect={redirect} key={index} />;
+          })}
         </tbody>
       </Table>
     </div>
