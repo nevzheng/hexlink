@@ -2,8 +2,9 @@ package hexlink
 
 import (
 	"context"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	httptransport "github.com/go-kit/kit/transport/http"
 )
@@ -27,7 +28,5 @@ func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
 			encodeJsonResponse,
 		),
 	)
-	//// Serve static files
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	return r
 }
