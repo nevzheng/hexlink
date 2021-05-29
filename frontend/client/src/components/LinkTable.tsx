@@ -1,4 +1,3 @@
-import React from "react";
 import Table from "react-bootstrap/Table";
 
 import { Redirect } from "types";
@@ -12,7 +11,7 @@ interface LinkTableProps {
 const LinkTable: React.FC<LinkTableProps> = ({ redirects }: LinkTableProps) => {
   return (
     <div>
-      <h3>Results</h3>
+      <h3>All Results</h3>
       <p>
         Links Not Persisted on Refresh. Would need to implement user or
         anonymous sessions

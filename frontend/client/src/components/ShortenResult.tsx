@@ -1,17 +1,21 @@
-import React from "react";
-
 import Card from "react-bootstrap/Card";
 
-const ShortenResult: React.FC = () => {
+interface ShortenedResultProps {
+  url?: string;
+  shortUrl?: string;
+}
+
+const ShortenResult: React.FC<ShortenedResultProps> = ({
+  url,
+  shortUrl,
+}: ShortenedResultProps) => {
   return (
     <div>
       <Card>
         <Card.Body>
-          <Card.Title>Shortened URL</Card.Title>
+          <Card.Title>Result</Card.Title>
           <Card.Text>
-            The backend is implemented in Golang using a Hexagonal Archtecture.
-            This architectural pattern results in clean code that is easier to
-            modify and extend.
+            {url ? url + "=>" + shortUrl : "Please Shorten a URL"}
           </Card.Text>
         </Card.Body>
       </Card>

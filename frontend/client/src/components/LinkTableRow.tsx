@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Redirect } from "types";
 
 interface LinkTableRowProp {

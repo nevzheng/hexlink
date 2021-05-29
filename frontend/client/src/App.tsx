@@ -9,23 +9,27 @@ import LinkTable from "./components/LinkTable";
 import UrlForm from "./components/UrlForm";
 import ShortenResult from "./components/ShortenResult";
 
-export const App = () => {
+import AppContextProvider from "./context/AppContext";
+
+export const App: React.FC = () => {
   return (
-    <Container className="p-3">
-      <IntroJumbo />
-      <Row>
-        <Col>
-          <UrlForm />
-        </Col>
-        <Col>
-          <ShortenResult />
-        </Col>
-      </Row>
-      <hr />
-      <LinkTable />
-      <hr />
-      <Information />
-    </Container>
+    <AppContextProvider>
+      <Container className="p-3">
+        <IntroJumbo />
+        <Row>
+          <Col>
+            <UrlForm />
+          </Col>
+          <Col>
+            <ShortenResult />
+          </Col>
+        </Row>
+        <hr />
+        <LinkTable redirects={[]} />
+        <hr />
+        <Information />
+      </Container>
+    </AppContextProvider>
   );
 };
 

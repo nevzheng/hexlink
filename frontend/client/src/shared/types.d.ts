@@ -5,13 +5,15 @@ declare module "types" {
     created: string;
   }
 
-  interface ContextProps {
-    lastRedirectId: number;
+  interface AppContextInterface {
+    lastRedirectId: number | null;
+    setLastRedirectId: (value: any) => void;
     redirects: Array<Redirect>;
+    setRedirects: (value: any) => void;
   }
 }
 
 module.exports = {
   Redirect,
-  ContextProps,
+  AppContextInterface,
 };
