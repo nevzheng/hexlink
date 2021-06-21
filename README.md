@@ -15,6 +15,14 @@ Note: The "http://" in the url is important TODO: improve this with http validat
 
 ```
 
+## Docker Commands
+```
+docker build -t nevzh/hexlink
+docker run nevzh/hexlink
+docker push nevzh/hexlink
+```
+
+
 ### Following a shortened link
 
 ```sh
