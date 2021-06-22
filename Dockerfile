@@ -23,20 +23,20 @@ RUN go mod download
 COPY . .
 
 # Build hexlink
-RUN go build -o main .
+RUN go build -o hexlink-server ./cmd/hexlink-server/main.go
 
 # Move to /dist for resulting binary
 WORKDIR /dist
 
 # Copy binary from build to main folder
-RUN cp /build/main .
+RUN cp /build/hexlink-server .
 
 ##############
 # DEPLOY STAGE
 ##############
 FROM scratch
 
-COPY --from=builder /dist/main /
+COPY --from=builder /dist/hexlink-server /
 
 # Command to use when starting the container
-ENTRYPOINT ["/main"]
+ENTRYPOINT ["/hexlink-server"]
