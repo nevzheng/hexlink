@@ -1,4 +1,4 @@
-package hexlink
+package main
 
 import (
 	"context"
@@ -44,6 +44,11 @@ func main() {
 	{
 		// Set up Redis
 		redisURL := os.Getenv("REDIS_URL")
+		if redisURL == "" {
+			defaultUrl := "redis://localhost:6379"
+			level.Warn(logger).Log("msg", "REDIS_URL Not Specified. Using default", "url", defaultUrl)
+			redisURL = defaultUrl
+		}
 		repo, err := rr.NewRedisRepository(redisURL, logger)
 		if err != nil {
 			level.Error(logger).Log("exit", err)
