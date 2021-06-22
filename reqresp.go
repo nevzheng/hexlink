@@ -16,7 +16,7 @@ type (
 	}
 
 	CreateRedirectsRequest struct {
-		Urls []t.URL `json:"urls"`
+		Urls []string `json:"urls"`
 	}
 
 	CreateRedirectsResponse struct {
@@ -30,7 +30,7 @@ type (
 	}
 
 	QueryRedirectsRequest struct {
-		Codes []t.Code `json:"codes"`
+		Codes []string `json:"codes"`
 	}
 
 	CreateRedirectRequest struct {
@@ -51,12 +51,12 @@ type (
 )
 
 func decodeCreateRedirectsRequest(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req CreateRedirectsRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
+	var urls []string
+	err := json.NewDecoder(r.Body).Decode(&urls)
 	if err != nil {
 		return nil, err
 	}
-	return req, nil
+	return CreateRedirectsRequest{Urls: urls}, nil
 }
 
 func decodeQueryRedirectsRequest(ctx context.Context, r *http.Request) (interface{}, error) {

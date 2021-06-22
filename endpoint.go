@@ -33,7 +33,7 @@ func makeCreateRedirectsEndpoint(s shortener.RedirectService) endpoint.Endpoint 
 		req := request.(CreateRedirectsRequest)
 		resp := new(CreateRedirectsResponse)
 		for _, url := range req.Urls {
-			redirect := &t.Redirect{Url: url}
+			redirect := &t.Redirect{Url: t.URL(url)}
 			if code, err := s.Store(redirect); err != nil {
 				be := BatchError{
 					Code:   code,

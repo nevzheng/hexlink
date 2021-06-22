@@ -78,9 +78,9 @@ func (r *redisRepository) Store(redirect *t.Redirect) error {
 	data := map[string]interface{}{
 		"hits":         redirect.Hits,
 		"id":           redirect.Id,
-		"redirectCode": redirect.RedirectCode,
+		"redirectCode": string(redirect.RedirectCode),
 		"timeCreated":  redirect.TimeCreated.UTC().Unix(),
-		"url":          redirect.Url,
+		"url":          string(redirect.Url),
 	}
 	_, err := r.client.HMSet(key, data).Result()
 	if err != nil {
