@@ -1,20 +1,19 @@
-package main
+package hexlink
 
 import (
 	"context"
 	"fmt"
-	"github.com/nevzheng/hexlink/hexlink/shortener"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	rr "github.com/nevzheng/hexlink/hexlink/repository/redis"
-
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 
-	"github.com/nevzheng/hexlink/hexlink"
+	"github.com/nevzheng/hexlink"
+	rr "github.com/nevzheng/hexlink/repository/redis"
+	"github.com/nevzheng/hexlink/shortener"
 )
 
 func main() {

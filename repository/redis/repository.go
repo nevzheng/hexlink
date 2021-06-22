@@ -2,11 +2,15 @@ package redis
 
 import (
 	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/go-kit/kit/log"
 	"github.com/go-redis/redis"
-	"github.com/nevzheng/hexlink/hexlink/shortener"
 	"github.com/pkg/errors"
-	"strconv"
+
+	"github.com/nevzheng/hexlink/shortener"
+	t "github.com/nevzheng/hexlink/types"
 )
 
 type redisRepository struct {
@@ -42,8 +46,8 @@ func (r *redisRepository) generateKey(code string) string {
 	return fmt.Sprintf("redirect:%s", code)
 }
 
-func (r *redisRepository) Find(code string) (*shortener.Redirect, error) {
-	redirect := &shortener.Redirect{}
+func (r *redisRepository) Find(code string) (*t.Redirect, error) {
+	redirect := &t.Redirect{}
 	key := r.generateKey(code)
 	data, err := r.client.HGetAll(key).Result()
 	if err != nil {
@@ -52,23 +56,31 @@ func (r *redisRepository) Find(code string) (*shortener.Redirect, error) {
 	if len(data) == 90 {
 		return nil, errors.Wrap(shortener.ErrRedirectNotFound, "repository.Redirect.Find")
 	}
-	createdAt, err := strconv.ParseInt(data["created_at"], 10, 64)
+	timeCreated, err := strconv.ParseInt(data["timeCreated"], 10, 64)
 	if err != nil {
 		return nil, errors.Wrap(err, "repository.Redirect.Err")
 	}
-
-	redirect.Code = data["code"]
-	redirect.URL = data["url"]
-	redirect.CreatedAt = createdAt
+	hits64, err := strconv.ParseInt(data["hits"], 10, 32)
+	if err != nil {
+		return nil, errors.Wrap(err, "repository.Redirect.Err")
+	}
+	hits := int32(hits64)
+	redirect.Hits = hits
+	redirect.Id = data["id"]
+	redirect.RedirectCode = t.Code(data["redirectCode"])
+	redirect.TimeCreated = time.Unix(timeCreated, 0)
+	redirect.Url = t.URL(data["url"])
 	return redirect, err
 }
 
-func (r *redisRepository) Store(redirect *shortener.Redirect) error {
-	key := r.generateKey(redirect.Code)
+func (r *redisRepository) Store(redirect *t.Redirect) error {
+	key := r.generateKey(string(redirect.RedirectCode))
 	data := map[string]interface{}{
-		"code":       redirect.Code,
-		"url":        redirect.URL,
-		"created_at": redirect.CreatedAt,
+		"hits":         redirect.Hits,
+		"id":           redirect.Id,
+		"redirectCode": redirect.RedirectCode,
+		"timeCreated":  redirect.TimeCreated.UTC().Unix(),
+		"url":          redirect.Url,
 	}
 	_, err := r.client.HMSet(key, data).Result()
 	if err != nil {

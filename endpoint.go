@@ -2,8 +2,10 @@ package hexlink
 
 import (
 	"context"
+
 	"github.com/go-kit/kit/endpoint"
-	"github.com/nevzheng/hexlink/hexlink/shortener"
+	"github.com/nevzheng/hexlink/shortener"
+	t "github.com/nevzheng/hexlink/types"
 )
 
 type Endpoints struct {
@@ -21,7 +23,7 @@ func MakeEndpoints(s shortener.RedirectService) Endpoints {
 func makeCreateRedirectEndpoint(s shortener.RedirectService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateRedirectRequest)
-		redirect := &shortener.Redirect{URL: req.Url}
+		redirect := &t.Redirect{Url: t.URL(req.Url)}
 		code, err := s.Store(redirect)
 		return CreateRedirectResponse{Code: code}, err
 	}
@@ -34,7 +36,7 @@ func makeGetRedirectEndpoint(s shortener.RedirectService) endpoint.Endpoint {
 			return nil, shortener.ErrRedirectNotFound
 		} else {
 			return GetRedirectResponse{
-				Url: redirect.URL,
+				Url: string(redirect.Url),
 			}, nil
 		}
 	}

@@ -1,6 +1,10 @@
 package shortener
 
+import (
+	t "github.com/nevzheng/hexlink/types"
+)
+
 type RedirectService interface {
-	Find(code string) (*Redirect, error)
-	Store(redirect *Redirect) (string, error)
+	Find(code string) (*t.Redirect, error)
+	Store(redirect *t.Redirect) (string, error)
 }
