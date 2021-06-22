@@ -1,0 +1,3 @@
+[submodule "hexlink-schema"]
+	path = hexlink-schema
+	url = git@github.com:nevzheng/hexlink-schema.git
