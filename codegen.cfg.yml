@@ -1,0 +1,5 @@
+output:
+  hexlink/types/types.gen.go
+package: types
+generate:
+  - types
