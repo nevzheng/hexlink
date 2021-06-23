@@ -6,6 +6,7 @@ require (
 	github.com/deepmap/oapi-codegen v1.8.1
 	github.com/go-kit/kit v0.10.0
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/pkg/errors v0.9.1
 	github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125

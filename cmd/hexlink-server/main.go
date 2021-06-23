@@ -42,7 +42,7 @@ func main() {
 	// Initialize the Service
 	var srv shortener.RedirectService
 	{
-		// Set up Redis
+		// Set up Redi s
 		redisURL := os.Getenv("REDIS_URL")
 		if redisURL == "" {
 			defaultUrl := "redis://localhost:6379"
@@ -68,6 +68,7 @@ func main() {
 		errs <- fmt.Errorf("%s", <-c)
 	}()
 
+	srv = hexlink.LoggingMiddleware{Logger: logger, Next: srv}
 	endpoints := hexlink.MakeEndpoints(srv)
 
 	go func() {

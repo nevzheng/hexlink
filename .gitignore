@@ -20,3 +20,6 @@
 # Intellij
 .idea/**
 bin/*
+
+# VSCode
+.vscode/**

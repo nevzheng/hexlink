@@ -2,64 +2,64 @@ package hexlink
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	httptransport "github.com/go-kit/kit/transport/http"
 )
 
+func loggingMiddleware(next http.Handler) http.Handler {
+	return handlers.LoggingHandler(os.Stderr, next)
+}
+
 func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
 	// Spawn a Gorilla Mux Router
 	r := mux.NewRouter()
-	// Add Middlewares
-	// Add Methods
 
+	// Add Middlewares
+	r.Use(loggingMiddleware)
+
+	// Create Handlers
 	// Post a collection of URLS returning the redirects
-	// POST /api/redirects/createRedirects
-	r.Methods("POST").Path("/api/redirects/createRedirects").Handler(
-		httptransport.NewServer(
-			endpoints.CreateRedirects,
-			decodeCreateRedirectsRequest,
-			encodeJsonResponse,
-		),
+	createRedirectsHandler := httptransport.NewServer(
+		endpoints.CreateRedirects,
+		decodeCreateRedirectsRequest,
+		encodeJsonResponse,
 	)
 
 	// Post a collection of Codes eturning the redirects
-	// POST /api/redirects/queryRedirects
-	r.Methods("POST").Path("/api/redirects/queryRedirects").Handler(
-		httptransport.NewServer(
-			endpoints.QueryRedirects,
-			decodeQueryRedirectsRequest,
-			encodeJsonResponse,
-		),
+	queryRedirectsHandler := httptransport.NewServer(
+		endpoints.QueryRedirects,
+		decodeQueryRedirectsRequest,
+		encodeJsonResponse,
 	)
 
 	// Shorten a URL, returning a redirect Code
-	// POST /api/redirects {url: {input}}}
-	r.Methods("POST").Path("/api/redirects").Handler(
-		httptransport.NewServer(
-			endpoints.CreateRedirect,
-			decodeCreateRedirectRequest,
-			encodeJsonResponse,
-		),
+	postRedirectHandler := httptransport.NewServer(
+		endpoints.CreateRedirect,
+		decodeCreateRedirectRequest,
+		encodeJsonResponse,
 	)
 
 	// Follow a Redirect
-	// GET /{code}
-	r.Methods("GET").Path("/{code}").Handler(
-		httptransport.NewServer(
-			endpoints.GetRedirect,
-			decodeGetRedirectRequest,
-			encodeGetRedirectResponse,
-		),
+	followRedirectHandler := httptransport.NewServer(
+		endpoints.GetRedirect,
+		decodeGetRedirectRequest,
+		encodeGetRedirectResponse,
 	)
-	r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
-		tpl, err1 := route.GetPathTemplate()
-		met, err2 := route.GetMethods()
-		fmt.Println(tpl, err1, met, err2)
-		return nil
-	})
+
+	// Attach Methods
+	// POST /api/redirects/createRedirects
+	r.Methods("POST").Path("/api/redirects/createRedirects").Handler(createRedirectsHandler)
+	// POST /api/redirects/queryRedirects
+	r.Methods("POST").Path("/api/redirects/queryRedirects").Handler(queryRedirectsHandler)
+	// POSredirects {url: {input}}}
+	r.Methods("POST").Path("/api/redirects").Handler(postRedirectHandler)
+	// GET /{code}
+	r.Methods("GET").Path("/{code}").Handler(followRedirectHandler)
+
 	return r
 }
