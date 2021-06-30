@@ -3,7 +3,9 @@ package hexlink
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
+	"net/url"
 
 	"github.com/gorilla/mux"
 	t "github.com/nevzheng/hexlink/types"
@@ -87,10 +89,17 @@ func encodeJsonResponse(ctx context.Context, w http.ResponseWriter, response int
 }
 
 func decodeCreateRedirectRequest(ctx context.Context, r *http.Request) (interface{}, error) {
-	var req CreateRedirectRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		return nil, err
+	// TODO: Enhance Error Handling. MAYBE something like: https://github.com/go-kit/kit/issues/807#issuecomment-468437166
+	// Ensure there is a query parameter
+	var qUrl string
+	if qUrl = r.URL.Query().Get("url"); qUrl == "" {
+		return nil, errors.New("Invalid request: Missing 'url' query Param")
 	}
-	return req, nil
+	// ensure the url is valid
+	if _, err := url.ParseRequestURI(qUrl); err != nil {
+		return nil, errors.New("Invalid request: Invalid 'url'")
+	}
+	return CreateRedirectRequest{
+		Url: qUrl,
+	}, nil
 }
