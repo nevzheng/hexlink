@@ -53,11 +53,11 @@ func NewHttpServer(ctx context.Context, endpoints Endpoints) http.Handler {
 
 	// Attach Methods
 	// POST /api/redirects/createRedirects
-	r.Methods("POST").Path("/api/redirects/createRedirects").Handler(createRedirectsHandler)
+	r.Methods("POST").Path("/redirects/createRedirects").Handler(createRedirectsHandler)
 	// POST /api/redirects/queryRedirects
-	r.Methods("POST").Path("/api/redirects/queryRedirects").Handler(queryRedirectsHandler)
+	r.Methods("POST").Path("/redirects/queryRedirects").Handler(queryRedirectsHandler)
 	// POSredirects {url: {input}}}
-	r.Methods("POST").Path("/api/redirects").Handler(postRedirectHandler)
+	r.Methods("POST").Path("/redirects").Handler(postRedirectHandler)
 	// GET /{code}
 	r.Methods("GET").Path("/{code}").Handler(followRedirectHandler)
 
